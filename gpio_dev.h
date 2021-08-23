@@ -92,10 +92,10 @@ GPIO_Error gpio_SetValue(unsigned int gpio_num, GPIO_Value value);
 /**
  * @brief Open fd
  * 
- * @param fd                fd
- * @return GPIO_Error 
+ * @param gpio_num                number of GPIO to set potential
+ * @return fd
  */
-GPIO_Error gpio_OpenFD(int fd);
+int gpio_OpenFD(unsigned int gpio_num);
 
 /**
  * @brief Close fd

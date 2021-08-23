@@ -46,12 +46,67 @@ GPIO_Error gpio_Unexport(unsigned int gpio_num)
     return 0;  
 } 
 
-GPIO_Error gpio_SetDirection(unsigned int gpio_num, GPIO_Direction out_flag);
+GPIO_Error gpio_SetDirection(unsigned int gpio_num, GPIO_Direction out_flag)
+{
+    int fd, len;  
+    char buf[MAX_BUF];  
+   
+    len = snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR  "/gpio%d/direction", gpio_num);  
+   
+    fd = open(buf, O_WRONLY);  
+    if (fd < 0) {  
+        perror("gpio/direction");  
+        return fd;  
+    }  
+   
+    if (out_flag)  
+        write(fd, "out", 4);  
+    else  
+        write(fd, "in", 3);  
+   
+    close(fd);  
+    return 0;  
+}
 
-GPIO_Error gpio_SetValue(unsigned int gpio_num, GPIO_Value value);
+GPIO_Error gpio_SetValue(unsigned int gpio_num, GPIO_Value value)
+{  
+    int fd, len;  
+    char buf[MAX_BUF];  
+   
+    len = snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio_num);  
+   
+    fd = open(buf, O_WRONLY);  
+    if (fd < 0) {  
+        perror("gpio/set-value");  
+        return fd;  
+    }  
+   
+    if (value)  
+        write(fd, "1", 2);  
+    else  
+        write(fd, "0", 2);  
+   
+    close(fd);  
+    return 0;  
+}  
 
-GPIO_Error gpio_OpenFD(int fd);
+int gpio_OpenFD(unsigned int gpio_num)
+{
+    int fd, len;  
+    char buf[MAX_BUF];  
+  
+    len = snprintf(buf, sizeof(buf), SYSFS_GPIO_DIR "/gpio%d/value", gpio_num);  
+   
+    fd = open(buf, O_RDONLY | O_NONBLOCK );  
+    if (fd < 0) {  
+        perror("gpio/fd_open");  
+    }  
+    return fd;  
+}
 
-GPIO_Error gpio_CloseFD(int fd);
+GPIO_Error gpio_CloseFD(int fd)
+{  
+    return close(fd);  
+}  
 
 /************************ (C) COPYRIGHT Joey Ke *****END OF FILE****/
