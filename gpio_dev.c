@@ -11,9 +11,40 @@
 /* Includes ------------------------------------------------------------------*/
 #include "gpio_dev.h"
 
-GPIO_Error gpio_Export(unsigned int gpio_num);
+GPIO_Error gpio_Export(unsigned int gpio_num)
+{
+    int fd, len;  
+    char buf[MAX_BUF];  
+   
+    fd = open(SYSFS_GPIO_DIR "/export", O_WRONLY);  
+    if (fd < 0) {  
+        perror("gpio/export");  
+        return fd;  
+    }  
+   
+    len = snprintf(buf, sizeof(buf), "%d", gpio_num);  
+    write(fd, buf, len);  
+    close(fd);  
+   
+    return 0;  
+}
 
-GPIO_Error gpio_Unexport(unsigned int gpio_num);
+GPIO_Error gpio_Unexport(unsigned int gpio_num)
+{  
+    int fd, len;  
+    char buf[MAX_BUF];  
+   
+    fd = open(SYSFS_GPIO_DIR "/unexport", O_WRONLY);  
+    if (fd < 0) {  
+        perror("gpio/export");  
+        return fd;  
+    }  
+   
+    len = snprintf(buf, sizeof(buf), "%d", gpio_num);  
+    write(fd, buf, len);  
+    close(fd);  
+    return 0;  
+} 
 
 GPIO_Error gpio_SetDirection(unsigned int gpio_num, GPIO_Direction out_flag);
 

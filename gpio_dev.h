@@ -12,9 +12,14 @@
  #ifndef GPIO_DEV_H
  #define GPIO_DEV_H
 /* Includes ------------------------------------------------------------------*/
+#include <stdio.h>
+#include <fcntl.h>  
 #include <stdint.h>
+#include <stdlib.h> 
+#include <unistd.h> 
 
 #define MAX_BUF 64
+#define SYSFS_GPIO_DIR "/sys/class/gpio"  
 
 #define   INT8       int8_t
 #define   INT16      int16_t
