@@ -25,7 +25,7 @@ GPIO_Error gpio_Export(unsigned int gpio_num)
     len = snprintf(buf, sizeof(buf), "%d", gpio_num);  
     write(fd, buf, len);  
     close(fd);  
-    printf("pin:\t%3d exported\n");
+    printf("pin:\t%3d exported\n", gpio_num); 
     return 0;  
 }
 
